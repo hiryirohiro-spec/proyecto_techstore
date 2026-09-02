@@ -1,59 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://placehold.co/120x120/22d3ee/0b0f19?text=%E2%9A%A1" width="90" alt="TechStore Logo">
 </p>
 
-## About Laravel
+<h1 align="center">TechStore ⚡</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  Tienda online de electrónica construida con <strong>Laravel 12</strong>. Catálogo de productos, carrito de compras, checkout e impuestos locales (bolivianos) y panel de administración completo.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Descripción
 
-## Learning Laravel
+**TechStore** es una aplicación web de comercio electrónico desarrollada con **Laravel 12** que permite explorar y comprar productos de electrónica (laptops, smartphones, audífonos, televisores, consolas y más). Incluye un **panel de administración** para gestionar productos, categorías, ventas e inventario, y una experiencia de compra completa con **moneda boliviana (Bs)** e **IVA del 13%**.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Características
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Tienda pública**: catálogo con filtros por categoría, ordenamiento y búsqueda; productos destacados y nuevos ingresos.
+- **Requiere inicio de sesión**: los visitantes son redirigidos al login antes de acceder a la tienda.
+- **Carrito de compras**: agregar, actualizar cantidades, eliminar y vaciar.
+- **Checkout**: métodos de pago locales (tarjeta, efectivo, transferencia bancaria, QR/Pagomóvil), dirección de envío y notas; cálculo automático de **IVA 13%**.
+- **Sistema de pedidos**: historial de compras por usuario con código de venta y detalle.
+- **Panel de administración**: dashboard con métricas (ingresos, ventas, ticket promedio, inventario bajo).
+  - **Productos**: CRUD completo con categorías, imágenes, precios, costos, stock y estados (activo, agotado, defectuoso).
+  - **Categorías**: CRUD con conteo de productos.
+  - **Ventas**: listado con filtros y detalle de cada venta con sus ítems e impuestos.
+  - **Inventario**: monitoreo de stock y alertas de productos con pocas unidades.
+- **Moneda e impuestos bolivianos**: precios reales de mercado en **bolivianos (Bs)** y **IVA 13%**.
+- **Tema visual**: fondo oscuro con luces **neón** animadas, tipografía moderna y **imágenes reales** de los productos.
+- **Autenticación**: registro e inicio de sesión con roles `admin` y `cliente`.
 
-## Laravel Sponsors
+## Requisitos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- PHP >= 8.2
+- Composer
+- SQLite (por defecto) u otro motor soportado por Laravel
 
-### Premium Partners
+## Instalación
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+# 1. Instalar dependencias
+composer install
 
-## Contributing
+# 2. Configurar entorno
+copy .env.example .env        # Windows
+php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 3. Base de datos (SQLite por defecto)
+#    Asegúrate de que exista database/database.sqlite (tocar archivo vacío en Windows):
+type nul > database\database.sqlite
 
-## Code of Conduct
+# 4. Migrar y sembrar datos de demostración
+php artisan migrate:fresh --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 5. Vínculo del almacenamiento (para imágenes)
+php artisan storage:link
 
-## Security Vulnerabilities
+# 6. Servidor local
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Credenciales de demostración
 
-## License
+| Rol | Correo | Contraseña |
+| --- | --- | --- |
+| Administrador | `admin@techstore.com` | `admin123` |
+| Cliente | `cliente@techstore.com` | `cliente123` |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> Cambia las credenciales de los usuarios demo antes de usar el sistema en producción.
+
+## Roles y permisos
+
+| Módulo | Admin | Cliente |
+| --- | --- | --- |
+| Tienda / catálogo | ✓ | ✓ |
+| Carrito y checkout | ✓ | ✓ |
+| Mis pedidos | ✓ | ✓ |
+| Panel / dashboard | ✓ | — |
+| Productos (CRUD) | ✓ | — |
+| Categorías (CRUD) | ✓ | — |
+| Ventas (listado y detalle) | ✓ | — |
+| Inventario | ✓ | — |
+
+## Moneda e impuestos
+
+- **Moneda**: Boliviano (`Bs`) con formato local, p. ej. `Bs 14.500` o `Bs 12.500,50`.
+- **Impuesto**: IVA boliviano del **13%** aplicado automáticamente en el checkout.
+- **Métodos de pago**: tarjeta, efectivo, transferencia bancaria y QR / Pagomóvil.
+
+## Rutas principales
+
+| Ruta | Descripción |
+| --- | --- |
+| `/login`, `/registro` | Autenticación de usuarios |
+| `/` | Inicio / tienda |
+| `/tienda` | Catálogo de productos (filtros y búsqueda) |
+| `/tienda/{slug}` | Detalle de producto |
+| `/carrito` | Carrito de compras |
+| `/checkout` | Proceso de compra |
+| `/mis-pedidos` | Historial de pedidos del usuario |
+| `/admin` | Panel de administración |
+| `/admin/products` | Gestión de productos |
+| `/admin/categories` | Gestión de categorías |
+| `/admin/sales` | Ventas registradas |
+| `/admin/inventory` | Control de inventario |
+
+## Pruebas
+
+```bash
+php artisan test
+```
+
+La suite cubre la redirección de usuarios invitados al login y el acceso autenticado a la tienda.
+
+## Stack
+
+Laravel 12 · Blade · Bootstrap 5 · Bootstrap Icons · SQLite · PHPUnit
+
+## Licencia
+
+Proyecto de código abierto bajo la licencia [MIT](https://opensource.org/licenses/MIT).
