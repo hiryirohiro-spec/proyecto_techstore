@@ -383,8 +383,8 @@
                     <h6 class="text-white">Contacto</h6>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-envelope me-2"></i>ventas@techstore.com</li>
-                        <li><i class="bi bi-telephone me-2"></i>+591 700 000 00</li>
-                        <li><i class="bi bi-geo-alt me-2"></i>Santa Cruz de la Sierra, Bolivia</li>
+                        <li><i class="bi bi-telephone me-2"></i>+591 73331916</li>
+                        <li><i class="bi bi-geo-alt me-2"></i>Oruro, Bolivia</li>
                     </ul>
                 </div>
             </div>
