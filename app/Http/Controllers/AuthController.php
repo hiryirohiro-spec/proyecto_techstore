@@ -10,9 +10,19 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
+    private const DEMO_CREDENTIALS = [
+        'admin@techstore.com' => 'admin123',
+        'cliente@techstore.com' => 'cliente123',
+    ];
+
     public function showLogin()
     {
-        return view('auth.login');
+        $users = User::orderByDesc('is_admin')->orderBy('created_at')->get();
+
+        return view('auth.login', [
+            'users' => $users,
+            'demoCredentials' => self::DEMO_CREDENTIALS,
+        ]);
     }
 
     public function login(Request $request)
