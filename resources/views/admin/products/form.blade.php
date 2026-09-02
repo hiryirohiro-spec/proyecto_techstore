@@ -76,13 +76,13 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Precio de venta ($) <span class="text-danger">*</span></label>
+                        <label class="form-label">Precio de venta (Bs) <span class="text-danger">*</span></label>
                         <input type="number" step="0.01" min="0" name="price" class="form-control @error('price') is-invalid @enderror"
                                value="{{ old('price', $product->price ?? 0) }}" required>
                         @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Costo de adquisición ($)</label>
+                        <label class="form-label">Costo de adquisición (Bs)</label>
                         <input type="number" step="0.01" min="0" name="cost" class="form-control @error('cost') is-invalid @enderror"
                                value="{{ old('cost', $product->cost ?? 0) }}" required>
                         @error('cost')<div class="invalid-feedback">{{ $message }}</div>@enderror

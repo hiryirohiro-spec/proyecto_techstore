@@ -95,13 +95,7 @@
                                 <td>{{ $sale->items->sum('quantity') }}</td>
                                 <td class="text-end fw-semibold text-success">{{ format_money($sale->total) }}</td>
                                 <td>
-                                    @if ($sale->status === 'completed')
-                                        <span class="badge bg-success">Completada</span>
-                                    @elseif ($sale->status === 'pending')
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    @else
-                                        <span class="badge bg-danger">Cancelada</span>
-                                    @endif
+                                    <span class="badge {{ $sale->getStatusBadge() }}">{{ $sale->getStatusLabel() }}</span>
                                 </td>
                                 <td class="text-end">
                                     <a href="{{ route('admin.sales.show', $sale) }}" class="btn btn-sm btn-outline-primary">Ver</a>

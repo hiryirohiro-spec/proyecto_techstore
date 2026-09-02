@@ -19,4 +19,18 @@ class OrderController extends Controller
 
         return view('orders.show', compact('order'));
     }
+
+    public function cancel(string $code)
+    {
+        $order = auth()->user()->sales()->where('code', $code)->firstOrFail();
+
+        if ($order->status !== 'pending') {
+            return back()->with('error', 'Solo puedes cancelar pedidos que estén pendientes.');
+        }
+
+        $order->restoreStock();
+        $order->update(['status' => 'canceled']);
+
+        return back()->with('success', 'Tu pedido fue cancelado y el stock repuesto.');
+    }
 }

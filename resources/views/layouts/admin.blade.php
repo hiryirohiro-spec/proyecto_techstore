@@ -98,7 +98,7 @@
                     <i class="bi bi-clipboard-data"></i> Inventario
                 </a>
                 <a href="{{ route('admin.sales.index') }}" class="{{ request()->routeIs('admin.sales.*') ? 'active' : '' }}">
-                    <i class="bi bi-currency-dollar"></i> Ventas
+                    <i class="bi bi-receipt"></i> Ventas
                 </a>
                 <div class="section-label">Otros</div>
                 <a href="{{ route('home') }}">

@@ -48,4 +48,53 @@ class Sale extends Model
             default => $this->status,
         };
     }
+
+    public function getStatusBadge(): string
+    {
+        return match ($this->status) {
+            'completed' => 'bg-success',
+            'pending' => 'bg-warning text-dark',
+            'canceled' => 'bg-danger',
+            default => 'bg-secondary',
+        };
+    }
+
+    public function restoreStock(): void
+    {
+        $this->loadMissing('items.product');
+
+        foreach ($this->items as $item) {
+            $product = $item->product;
+
+            if (! $product) {
+                continue;
+            }
+
+            $product->increment('stock', $item->quantity);
+
+            if ($product->stock > 0 && $product->status === 'out_of_stock') {
+                $product->update(['status' => 'available']);
+            }
+        }
+    }
+
+    public function deductStock(): void
+    {
+        $this->loadMissing('items.product');
+
+        foreach ($this->items as $item) {
+            $product = $item->product;
+
+            if (! $product) {
+                continue;
+            }
+
+            $product->decrement('stock', $item->quantity);
+            $product->refresh();
+
+            if ($product->stock <= 0) {
+                $product->update(['status' => 'out_of_stock']);
+            }
+        }
+    }
 }

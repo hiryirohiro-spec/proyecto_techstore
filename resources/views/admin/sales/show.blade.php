@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                         <h6 class="fw-bold mb-0"><i class="bi bi-receipt me-2 text-brand"></i>Artículos de la venta</h6>
-                        <span class="badge bg-success fs-6">{{ $sale->getStatusLabel() }}</span>
+                        <span class="badge {{ $sale->getStatusBadge() }} fs-6">{{ $sale->getStatusLabel() }}</span>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-middle">
@@ -82,6 +82,32 @@
                     @endif
                 </div>
             </div>
+            @if ($sale->status === 'pending')
+                <div class="d-grid gap-2 mb-3">
+                    <form method="POST" action="{{ route('admin.sales.status', $sale) }}" onsubmit="return confirm('Confirmar la venta como completada?');">
+                        @csrf
+                        <input type="hidden" name="status" value="completed">
+                        <button class="btn btn-success w-100"><i class="bi bi-check-lg me-2"></i>Marcar como completada</button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.sales.status', $sale) }}" onsubmit="return confirm('Cancelar esta venta? El stock se repondrá.');">
+                        @csrf
+                        <input type="hidden" name="status" value="canceled">
+                        <button class="btn btn-outline-danger w-100"><i class="bi bi-x-circle me-2"></i>Cancelar venta</button>
+                    </form>
+                </div>
+            @elseif ($sale->status === 'completed')
+                <form method="POST" action="{{ route('admin.sales.status', $sale) }}" class="mb-3" onsubmit="return confirm('Cancelar esta venta? Se repondrá el stock.');">
+                    @csrf
+                    <input type="hidden" name="status" value="canceled">
+                    <button class="btn btn-outline-danger w-100"><i class="bi bi-x-circle me-2"></i>Cancelar venta (reembolso)</button>
+                </form>
+            @elseif ($sale->status === 'canceled')
+                <form method="POST" action="{{ route('admin.sales.status', $sale) }}" class="mb-3" onsubmit="return confirm('Reactivar la venta como completada?');">
+                    @csrf
+                    <input type="hidden" name="status" value="completed">
+                    <button class="btn btn-success w-100"><i class="bi bi-check-lg me-2"></i>Reactivar como completada</button>
+                </form>
+            @endif
             <a href="{{ route('admin.sales.index') }}" class="btn btn-outline-secondary w-100">
                 <i class="bi bi-arrow-left me-2"></i>Volver a ventas
             </a>

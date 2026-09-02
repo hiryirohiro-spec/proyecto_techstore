@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
@@ -67,12 +66,12 @@ class CheckoutController extends Controller
         $total = $subtotal + $tax;
 
         $sale = Sale::create([
-            'code' => 'VENTA-' . strtoupper(Str::random(8)),
+            'code' => str_pad((int) Sale::max('id') + 1, 4, '0', STR_PAD_LEFT),
             'user_id' => $request->user()->id,
             'subtotal' => $subtotal,
             'tax' => $tax,
             'total' => $total,
-            'status' => 'completed',
+            'status' => in_array($data['payment_method'], ['tarjeta', 'qr'], true) ? 'completed' : 'pending',
             'payment_method' => $data['payment_method'],
             'shipping_address' => $data['shipping_address'],
             'notes' => $data['notes'] ?? null,

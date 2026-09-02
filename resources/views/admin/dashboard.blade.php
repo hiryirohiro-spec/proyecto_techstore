@@ -13,7 +13,7 @@
                             <div class="text-muted small">Ingresos totales</div>
                             <div class="fs-4 fw-bold text-success">{{ format_money($totalRevenue) }}</div>
                         </div>
-                        <i class="bi bi-currency-dollar fs-2 text-success-subtle"></i>
+                        <i class="bi bi-cash-stack fs-2 text-success-subtle"></i>
                     </div>
                 </div>
             </div>

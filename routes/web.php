@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mis-pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/mis-pedidos/{code}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/mis-pedidos/{code}/cancelar', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('sales', [AdminSaleController::class, 'index'])->name('sales.index');
     Route::get('sales/{sale}', [AdminSaleController::class, 'show'])->name('sales.show');
+    Route::post('sales/{sale}/status', [AdminSaleController::class, 'updateStatus'])->name('sales.status');
 
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory.index');
 });

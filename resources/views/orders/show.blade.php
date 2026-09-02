@@ -12,11 +12,25 @@
         </nav>
 
         <div class="text-center mb-4">
-            <div class="bg-success-subtle d-inline-flex align-items-center justify-content-center rounded-circle mb-2" style="width: 70px; height: 70px;">
-                <i class="bi bi-check-lg text-success fs-1"></i>
-            </div>
-            <h4 class="fw-bold mb-1">¡Gracias por tu compra!</h4>
-            <p class="text-muted">Tu pedido se registró correctamente con el código <strong>{{ $order->code }}</strong>.</p>
+            @if ($order->status === 'completed')
+                <div class="bg-success-subtle d-inline-flex align-items-center justify-content-center rounded-circle mb-2" style="width: 70px; height: 70px;">
+                    <i class="bi bi-check-lg text-success fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-1">¡Gracias por tu compra!</h4>
+                <p class="text-muted">Tu pedido se registró correctamente con el código <strong>{{ $order->code }}</strong>.</p>
+            @elseif ($order->status === 'pending')
+                <div class="bg-warning-subtle d-inline-flex align-items-center justify-content-center rounded-circle mb-2" style="width: 70px; height: 70px;">
+                    <i class="bi bi-clock text-warning fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-1">Pedido pendiente de confirmación</h4>
+                <p class="text-muted">Tu pedido <strong>{{ $order->code }}</strong> está a la espera de confirmación del pago (efectivo o transferencia realizado).</p>
+            @else
+                <div class="bg-danger-subtle d-inline-flex align-items-center justify-content-center rounded-circle mb-2" style="width: 70px; height: 70px;">
+                    <i class="bi bi-x-lg text-danger fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-1">Pedido cancelado</h4>
+                <p class="text-muted">El pedido <strong>{{ $order->code }}</strong> fue cancelado. Si necesitas ayuda, contáctanos.</p>
+            @endif
         </div>
 
         <div class="row g-4">
@@ -53,7 +67,7 @@
                         <h6 class="fw-bold border-bottom pb-2 mb-3"><i class="bi bi-info-circle me-2 text-brand"></i>Información del pedido</h6>
                         <div class="small">
                             <div class="d-flex justify-content-between py-1"><span class="text-muted">Fecha</span><span>{{ $order->created_at->format('d/m/Y H:i') }}</span></div>
-                            <div class="d-flex justify-content-between py-1"><span class="text-muted">Estado</span><span class="badge bg-success">{{ $order->getStatusLabel() }}</span></div>
+                            <div class="d-flex justify-content-between py-1"><span class="text-muted">Estado</span><span class="badge {{ $order->getStatusBadge() }}">{{ $order->getStatusLabel() }}</span></div>
                             <div class="d-flex justify-content-between py-1"><span class="text-muted">Pago</span><span>{{ ucfirst($order->payment_method) }}</span></div>
                         </div>
                         <hr>
@@ -69,6 +83,13 @@
                 <a href="{{ route('shop.index') }}" class="btn btn-brand w-100">
                     <i class="bi bi-bag me-2"></i>Ir a la tienda
                 </a>
+                @if ($order->status === 'pending')
+                    <form method="POST" action="{{ route('orders.cancel', $order->code) }}" class="mt-2"
+                          onsubmit="return confirm('¿Seguro que quieres cancelar el pedido {{ $order->code }}? El stock se repondrá.');">
+                        @csrf
+                        <button class="btn btn-outline-danger w-100"><i class="bi bi-x-circle me-2"></i>Cancelar pedido</button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>

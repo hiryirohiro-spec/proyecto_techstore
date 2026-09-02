@@ -35,9 +35,18 @@
                                 <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                                 <td>{{ $order->items->sum('quantity') }} artículos</td>
                                 <td>{{ format_money($order->total) }}</td>
-                                <td><span class="badge bg-success">{{ $order->getStatusLabel() }}</span></td>
+                                <td><span class="badge {{ $order->getStatusBadge() }}">{{ $order->getStatusLabel() }}</span></td>
                                 <td class="text-end">
-                                    <a href="{{ route('orders.show', $order->code) }}" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                                    <div class="d-inline-flex gap-1">
+                                        <a href="{{ route('orders.show', $order->code) }}" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                                        @if ($order->status === 'pending')
+                                            <form method="POST" action="{{ route('orders.cancel', $order->code) }}"
+                                                  onsubmit="return confirm('¿Seguro que quieres cancelar el pedido {{ $order->code }}?');">
+                                                @csrf
+                                                <button class="btn btn-sm btn-outline-danger">Cancelar</button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

@@ -10,8 +10,20 @@ class SaleController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Sale::with(['user', 'items'])->latest();
+        $sales = Sale::with(['user', 'items'])->latest();
+        $this->applyFilters($sales, $request);
 
+        $sales = $sales->paginate(15)->withQueryString();
+
+        $summary = Sale::selectRaw('COUNT(*) as total_sales, COALESCE(SUM(total), 0) as total_revenue, COALESCE(SUM(subtotal), 0) as total_subtotal, COALESCE(SUM(tax), 0) as total_tax');
+        $this->applyFilters($summary, $request);
+        $summary = $summary->first();
+
+        return view('admin.sales.index', compact('sales', 'summary'));
+    }
+
+    private function applyFilters($query, Request $request): void
+    {
         if ($status = $request->input('status')) {
             $query->where('status', $status);
         }
@@ -31,14 +43,6 @@ class SaleController extends Controller
         if ($to = $request->input('date_to')) {
             $query->whereDate('created_at', '<=', $to);
         }
-
-        $sales = $query->paginate(15)->withQueryString();
-
-        $summary = Sale::selectRaw('COUNT(*) as total_sales, COALESCE(SUM(total), 0) as total_revenue, COALESCE(SUM(subtotal), 0) as total_subtotal, COALESCE(SUM(tax), 0) as total_tax')
-            ->where('status', 'completed')
-            ->first();
-
-        return view('admin.sales.index', compact('sales', 'summary'));
     }
 
     public function show(Sale $sale)
@@ -46,5 +50,30 @@ class SaleController extends Controller
         $sale->load(['user', 'items.product']);
 
         return view('admin.sales.show', compact('sale'));
+    }
+
+    public function updateStatus(Request $request, Sale $sale)
+    {
+        $status = $request->input('status');
+
+        if (! in_array($status, ['completed', 'pending', 'canceled'], true)) {
+            abort(422, 'Estado no válido.');
+        }
+
+        if ($sale->status === $status) {
+            return back();
+        }
+
+        if ($status === 'canceled' && in_array($sale->status, ['pending', 'completed'], true)) {
+            $sale->restoreStock();
+        }
+
+        if ($status === 'completed' && $sale->status === 'canceled') {
+            $sale->deductStock();
+        }
+
+        $sale->update(['status' => $status]);
+
+        return back()->with('success', 'Estado de la venta actualizado.');
     }
 }
