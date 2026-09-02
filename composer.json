@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "hiryirohiro-spec/proyecto_techstore",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Sistema de e-commerce de electrónica con Laravel 12: catálogo, carrito, checkout con IVA 13% (Bolivia) y panel de administración.",
+    "keywords": ["laravel", "e-commerce", "tienda", "electronica", "bolivia"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
